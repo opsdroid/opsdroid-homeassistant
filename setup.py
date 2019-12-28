@@ -6,6 +6,7 @@
 from setuptools import setup, find_packages
 import os
 
+import versioneer
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(HERE, "README.md"), encoding="utf8", "r") as fh:
@@ -14,6 +15,8 @@ with open(os.path.join(HERE, "requirements.txt"), "r") as fh:
     REQUIRES = [line.strip() for line in fh]
 
 setup(
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Jacob Tomlinson",
     author_email="jacob@tomlinson.email",
     classifiers=[
@@ -38,6 +41,5 @@ setup(
         "opsdroid_connectors": ["homeassistant = opsdroid_homeassistant.connector"]
     },
     url="https://github.com/opsdroid/opsdroid-homeassistant",
-    version="0.1.0",
     zip_safe=False,
 )
