@@ -9,7 +9,7 @@ import os
 import versioneer
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(HERE, "README.md"), encoding="utf8", "r") as fh:
+with open(os.path.join(HERE, "README.md"), "r", encoding="utf8") as fh:
     README = fh.read()
 with open(os.path.join(HERE, "requirements.txt"), "r") as fh:
     REQUIRES = [line.strip() for line in fh]
