@@ -4,7 +4,7 @@ from opsdroid.matchers import match_event
 from opsdroid_homeassistant.connector import HassEvent
 
 
-def match_hass_state_changed(entity_id: str, **kwargs) -> Callable[Callable]:
+def match_hass_state_changed(entity_id: str, **kwargs) -> Callable:
     """Example function with PEP 484 type annotations.
 
     Args:
