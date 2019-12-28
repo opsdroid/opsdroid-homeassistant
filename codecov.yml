@@ -1,0 +1,2 @@
+ignore:
+  - "opsdroid_homeassistant/_version.py"
