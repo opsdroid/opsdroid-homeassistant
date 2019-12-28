@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""The setup script."""
+
+from setuptools import setup, find_packages
+import os
+
+
+HERE = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(HERE, "README.md"), encoding="utf8", "r") as fh:
+    README = fh.read()
+with open(os.path.join(HERE, "requirements.txt"), "r") as fh:
+    REQUIRES = [line.strip() for line in fh]
+
+setup(
+    author="Jacob Tomlinson",
+    author_email="jacob@tomlinson.email",
+    classifiers=[
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+    ],
+    description="Home Assistant support for opsdroid",
+    install_requires=REQUIRES,
+    license="Apache Software License 2.0",
+    long_description=README,
+    include_package_data=True,
+    keywords="opsdroid home assistant",
+    name="opsdroid-homeassistant",
+    packages=["opsdroid_homeassistant"],
+    setup_requires=REQUIRES,
+    entry_points={
+        "opsdroid_connectors": ["homeassistant = opsdroid_homeassistant.connector"]
+    },
+    url="https://github.com/opsdroid/opsdroid-homeassistant",
+    version="0.1.0",
+    zip_safe=False,
+)
