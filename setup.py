@@ -36,7 +36,6 @@ setup(
     keywords="opsdroid home assistant",
     name="opsdroid-homeassistant",
     packages=["opsdroid_homeassistant"],
-    setup_requires=REQUIRES,
     entry_points={
         "opsdroid_connectors": ["homeassistant = opsdroid_homeassistant.connector"]
     },
