@@ -12,6 +12,6 @@ install:
   - pip install -e .
   - pip install pytest pytest-cov codecov
 
-script: pytest tests  --cov-report term --cov=app/test/
+script: pytest opsdroid_homeassistant --cov --cov-report term
 
 after_success: codecov
