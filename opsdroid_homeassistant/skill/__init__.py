@@ -2,7 +2,7 @@ import logging
 
 from opsdroid.skill import Skill
 
-from opsdroid_homeassistant.connector import HassServiceCall
+from ..connector import HassServiceCall
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 from typing import Callable
 
 from opsdroid.matchers import match_event
-from opsdroid_homeassistant.connector import HassEvent
+from ..connector import HassEvent
 
 
 def match_hass_state_changed(entity_id: str, **kwargs) -> Callable:
