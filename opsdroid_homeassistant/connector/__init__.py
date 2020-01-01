@@ -16,7 +16,7 @@ CONFIG_SCHEMA = {
 
 
 class HassEvent(Event):
-    """Event class to represent Home Assistant event."""
+    """Event class to represent a Home Assistant event."""
 
 
 class HassServiceCall(Event):
@@ -30,6 +30,9 @@ class HassServiceCall(Event):
 
 
 class HassConnector(Connector):
+    """An opsdroid connector for syncing events with the Home Assistant event loop.
+
+    """
     def __init__(self, config, opsdroid=None):
         super().__init__(config, opsdroid=opsdroid)
         self.name = "homeassistant"
