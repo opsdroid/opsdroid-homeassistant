@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = "opsdroid-homeassistant"
+project = "Opsdroid Home Assistant"
 copyright = "2019, opsdroid contributors"
 author = "opsdroid contributors"
 
@@ -59,6 +59,7 @@ html_static_path = ["_static"]
 
 html_theme_options = {
     "logo": "logo.png",
+    "logo_name": True,
     "font_family": "'Montserrat', sans-serif",
     "code_font_family": "'Fira Code', monospace",
 }
