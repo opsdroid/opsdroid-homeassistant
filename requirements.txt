@@ -1,1 +1,1 @@
-opsdroid>=0.17.0
+opsdroid>=0.17.1
