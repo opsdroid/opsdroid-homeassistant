@@ -33,7 +33,7 @@ setup(
     license="Apache Software License 2.0",
     long_description=README,
     include_package_data=True,
-    keywords="opsdroid home assistant",
+    keywords="Opsdroid Home Assistant",
     name="opsdroid-homeassistant",
     packages=["opsdroid_homeassistant"],
     entry_points={
