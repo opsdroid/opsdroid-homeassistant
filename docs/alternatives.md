@@ -21,10 +21,11 @@ class MotionLights(hass.Hass):
         self.listen_state(self.motion, "binary_sensor.drive", new="on")
 
     def motion(self, entity, attribute, old, new, kwargs):
-        self.turn_on("light.drive")
-        self.run_in(self.light_off, 60)
-        self.flashcount = 0
-        self.run_in(self.flash_warning, 1)
+        if self.sun_down():
+            self.turn_on("light.drive")
+            self.run_in(self.light_off, 60)
+            self.flashcount = 0
+            self.run_in(self.flash_warning, 1)
 
     def light_off(self, kwargs):
         self.turn_off("light.drive")
@@ -49,12 +50,13 @@ class MotionLights(HassSkill):
 
     @match_hass_state_changed("binary_sensor.drive", state="on")
     async def motion_lights(self, event):
-        await self.turn_on("light.drive")
-        for _ in range(10):
-            await self.toggle("light.living_room")
-            await sleep(1)
-        await sleep(50)  # Because 10 seconds have already elapsed
-        await self.turn_off("light.drive")
+        if await self.sun_down():
+            await self.turn_on("light.drive")
+            for _ in range(10):
+                await self.toggle("light.living_room")
+                await sleep(1)
+            await sleep(50)  # Because 10 seconds have already elapsed
+            await self.turn_off("light.drive")
 ```
 
 Here we can see we just have one method which contains all of our logic. The flow is laid out in order of what we want to happen, we perform an action, then sleep the amount of time we want to wait, then perform the next action. This makes our automation much more readable. As we are using asyncio we are able to run this concurrently with other skills thanks to the `async`/`await` syntax. A downside to this approach is that each sleep needs to be a time delta, if we want our drive light to turn off after 60 seconds we need to keep track of how long we've slept since turning it on.

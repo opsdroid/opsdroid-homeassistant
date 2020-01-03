@@ -38,7 +38,10 @@ class HassConnector(Connector):
         self.name = "homeassistant"
         self.default_target = None
         self.connection = None
-        self.url = urllib.parse.urljoin(self.config.get("url"), "/api/websocket")
+        self.discovery_info = None
+        self.token = self.config.get("token")
+        self.api_url = urllib.parse.urljoin(self.config.get("url"), "/api/")
+        self.websocket_url = urllib.parse.urljoin(self.api_url, "websocket")
         self.id = 1
 
     def _get_next_id(self):
@@ -46,11 +49,11 @@ class HassConnector(Connector):
         return self.id
 
     async def connect(self):
-        pass
+        self.discovery_info = await self.query_api('discovery_info')
 
     async def listen(self):
         async with aiohttp.ClientSession() as session:
-            async with session.ws_connect(self.url) as ws:
+            async with session.ws_connect(self.websocket_url) as ws:
                 self.connection = ws
                 async for msg in self.connection:
                     if msg.type == aiohttp.WSMsgType.TEXT:
@@ -58,12 +61,46 @@ class HassConnector(Connector):
                     elif msg.type == aiohttp.WSMsgType.ERROR:
                         break
 
+    async def query_api(self, endpoint, method='GET', **params):
+        """Query a Home Assistant API endpoint.
+
+        The Home Assistant API can be queried at ``<hass url>/api/<endpoint>``. For a full reference
+        of the available endpoints see https://developers.home-assistant.io/docs/en/external_api_rest.html.
+
+        Args:
+            endpoint: The endpoint that comes after /api/.
+            method: HTTP method to use
+            **params: Parameters are specified as kwargs.
+                      For GET requests these will be sent as url params.
+                      For POST requests these will be dumped as a JSON dict and send at the post body.
+
+        """
+        url = urllib.parse.urljoin(self.api_url + '/', endpoint)
+        headers = {
+            "Authorization": "Bearer " + self.token,
+            "Content-Type": "application/json"
+        }
+        _LOGGER.debug("Making a %s request to %s", method, url)
+        async with aiohttp.ClientSession() as session:
+            if method.upper() == 'GET':
+                async with session.get(url, headers=headers, params=params) as resp:
+                    if resp.status >= 400:
+                        _LOGGER.error("Error %s - %s", resp.status, await resp.text())
+                    else:
+                        return json.loads(await resp.text())
+            if method.upper() == 'POST':
+                async with session.post(url, headers=headers, data=json.dumps(params)) as resp:
+                    if resp.status >= 400:
+                        _LOGGER.error("Error %s - %s", resp.status, await resp.text())
+                    else:
+                        return json.loads(await resp.text())
+
     async def _handle_message(self, msg):
         msg_type = msg.get("type")
 
         if msg_type == "auth_required":
             await self.connection.send_json(
-                {"type": "auth", "access_token": self.config.get("token")}
+                {"type": "auth", "access_token": self.token}
             )
 
         if msg_type == "auth_invalid":
@@ -113,4 +150,5 @@ class HassConnector(Connector):
         )
 
     async def disconnect(self):
+        self.discovery_info = None
         await self.connection.close()

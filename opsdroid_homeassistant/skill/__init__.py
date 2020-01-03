@@ -128,3 +128,23 @@ class HassSkill(Skill):
         await self.call_service(
             "notify", "notify", message=message, title=title, **kwargs
         )
+
+    async def sun_up(self):
+        """Check whether the sun is up.
+
+        Returns:
+            True if sun is up, else False.
+
+        """
+        sun_state = await self.hass.query_api('states/sun.sun')
+        return sun_state['state'] == "above_horizon"
+
+    async def sun_down(self):
+        """Check whether the sun is down.
+
+        Returns:
+            True if sun is down, else False.
+
+        """
+        sun_state = await self.hass.query_api('states/sun.sun')
+        return sun_state['state'] == "below_horizon"
