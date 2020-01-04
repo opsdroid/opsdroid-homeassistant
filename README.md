@@ -5,3 +5,5 @@
 [![Read the Docs](https://img.shields.io/readthedocs/opsdroid-homeassistant)](https://home-assistant.opsdroid.dev/en/latest/)
 
 A plugin for Opsdroid to enable Home Assistant automation.
+
+For more information [see the documentation](https://home-assistant.opsdroid.dev).
