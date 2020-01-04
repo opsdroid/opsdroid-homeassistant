@@ -242,3 +242,27 @@ class HassSkill(Skill):
         trackers = await self.get_trackers()
         not_home = [tracker["state"] == "not_home" for tracker in trackers]
         return all(not_home)
+
+    async def render_template(self, template: str) -> str:
+        """Ask Home Assistant to render a template.
+
+        Home Assistant has a built in templating engine powered by Jinja2.
+
+        https://www.home-assistant.io/docs/configuration/templating/
+
+        This method allows you to pass a template string to Home Assistant and
+        it will return the formatted response.
+
+        Args:
+            template: The template string to be rendered by Home Assistant.
+
+        Returns:
+            A formatted string of the template.
+
+        Examples:
+
+            >>> await self.render_template("Jacob is at {{ states('device_tracker.jacob') }}!")
+            Jacob is at home!
+
+        """
+        return await self.hass.query_api("template", method="POST", decode_json=False, template=template)

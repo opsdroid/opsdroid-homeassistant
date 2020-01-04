@@ -121,3 +121,12 @@ Helper functions for getting info about presence.
 .. autofunction:: opsdroid_homeassistant.HassSkill.get_trackers
    :noindex:
 ```
+
+## Misc
+
+### render_template()
+
+```eval_rst
+.. autofunction:: opsdroid_homeassistant.HassSkill.render_template
+   :noindex:
+```

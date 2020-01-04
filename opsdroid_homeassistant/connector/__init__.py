@@ -61,7 +61,7 @@ class HassConnector(Connector):
                     elif msg.type == aiohttp.WSMsgType.ERROR:
                         break
 
-    async def query_api(self, endpoint, method='GET', **params):
+    async def query_api(self, endpoint, method='GET', decode_json=True, **params):
         """Query a Home Assistant API endpoint.
 
         The Home Assistant API can be queried at ``<hass url>/api/<endpoint>``. For a full reference
@@ -70,6 +70,7 @@ class HassConnector(Connector):
         Args:
             endpoint: The endpoint that comes after /api/.
             method: HTTP method to use
+            decode_json: Whether JSON should be decoded before returning
             **params: Parameters are specified as kwargs.
                       For GET requests these will be sent as url params.
                       For POST requests these will be dumped as a JSON dict and send at the post body.
@@ -87,13 +88,16 @@ class HassConnector(Connector):
                     if resp.status >= 400:
                         _LOGGER.error("Error %s - %s", resp.status, await resp.text())
                     else:
-                        return json.loads(await resp.text())
+                        response = await resp.text()
             if method.upper() == 'POST':
                 async with session.post(url, headers=headers, data=json.dumps(params)) as resp:
                     if resp.status >= 400:
                         _LOGGER.error("Error %s - %s", resp.status, await resp.text())
                     else:
-                        return json.loads(await resp.text())
+                        response = await resp.text()
+        if decode_json:
+            response = json.loads(response)
+        return response
 
     async def _handle_message(self, msg):
         msg_type = msg.get("type")
