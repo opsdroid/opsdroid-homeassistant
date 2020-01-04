@@ -47,8 +47,8 @@ def match_hass_state_changed(entity_id: str, **kwargs) -> Callable:
     return match_event(HassEvent, entity_id=entity_id, changed=True, **kwargs)
 
 
-def match_sunrise() -> Callable:
-    """A matcher to trigger skills on sunrise.
+match_sunrise = match_hass_state_changed("sun.sun", state="above_horizon")
+match_sunrise.__doc__ = """A matcher to trigger skills on sunrise.
 
     This matcher can be used to run skills when the sun rises::
 
@@ -57,16 +57,15 @@ def match_sunrise() -> Callable:
 
         class SunriseSkill(HassSkill):
 
-            @match_sunrise()
+            @match_sunrise
             async def lights_off_at_sunrise(self, event):
                 await self.turn_off("light.outside")
 
     """
-    return match_hass_state_changed("sun.sun", state="above_horizon")
 
 
-def match_sunset() -> Callable:
-    """A matcher to trigger skills on sunset.
+match_sunset = match_hass_state_changed("sun.sun", state="below_horizon")
+match_sunset.__doc__ = """A matcher to trigger skills on sunset.
 
     This matcher can be used to run skills when the sun sets::
 
@@ -75,9 +74,8 @@ def match_sunset() -> Callable:
 
         class SunsetSkill(HassSkill):
 
-            @match_sunset()
+            @match_sunset
             async def lights_on_at_sunset(self, event):
                 await self.turn_on("light.outside")
 
     """
-    return match_hass_state_changed("sun.sun", state="below_horizon")
