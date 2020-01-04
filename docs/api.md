@@ -8,10 +8,18 @@
    :inherited-members:
 ```
 
-## Matcher
+## Matchers
 
 ```eval_rst
 .. autofunction:: opsdroid_homeassistant.match_hass_state_changed
+```
+
+```eval_rst
+.. autofunction:: opsdroid_homeassistant.match_sunrise
+```
+
+```eval_rst
+.. autofunction:: opsdroid_homeassistant.match_sunset
 ```
 
 ## Events

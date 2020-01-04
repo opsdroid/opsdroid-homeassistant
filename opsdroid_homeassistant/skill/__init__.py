@@ -1,3 +1,5 @@
+import arrow
+from datetime import datetime
 import logging
 
 from opsdroid.skill import Skill
@@ -136,8 +138,8 @@ class HassSkill(Skill):
             True if sun is up, else False.
 
         """
-        sun_state = await self.hass.query_api('states/sun.sun')
-        return sun_state['state'] == "above_horizon"
+        sun_state = await self.hass.query_api("states/sun.sun")
+        return sun_state["state"] == "above_horizon"
 
     async def sun_down(self):
         """Check whether the sun is down.
@@ -146,5 +148,97 @@ class HassSkill(Skill):
             True if sun is down, else False.
 
         """
-        sun_state = await self.hass.query_api('states/sun.sun')
-        return sun_state['state'] == "below_horizon"
+        sun_state = await self.hass.query_api("states/sun.sun")
+        return sun_state["state"] == "below_horizon"
+
+    async def sunrise(self):
+        """Get the timestamp for the next sunrise.
+
+        Returns:
+            A Datetime object of next sunrise.
+
+        """
+        sun_state = await self.hass.query_api("states/sun.sun")
+        sunrise = arrow.get(sun_state["attributes"]["next_rising"])
+        return sunrise.datetime
+
+    async def sunset(self):
+        """Get the timestamp for the next sunset.
+
+        Returns:
+            A Datetime object of next sunset.
+
+        """
+        sun_state = await self.hass.query_api("states/sun.sun")
+        sunset = arrow.get(sun_state["attributes"]["next_setting"])
+        return sunset.datetime
+
+    async def get_trackers(self):
+        """Get a list of tracker entities from Home Assistant.
+
+        Returns:
+            List of tracker dictionary objects.
+
+        Examples:
+
+            >>> await self.get_trackers()
+            [{
+                "attributes": {
+                    "entity_picture": "https://www.gravatar.com/avatar/00000000000000000000000000000000?s=500&d=mm",
+                    "friendly_name": "jacob",
+                    "ip": "192.168.0.2",
+                    "scanner": "NmapDeviceScanner",
+                    "source_type": "router"
+                },
+                "context": {
+                    "id": "abc123",
+                    "parent_id": None,
+                    "user_id": None
+                },
+                "entity_id": "device_tracker.jacob",
+                "last_changed": "2020-01-03T20:27:55.001812+00:00",
+                "last_updated": "2020-01-03T20:27:55.001812+00:00",
+                "state": "home"
+            }]
+
+        """
+        states = await self.hass.query_api("states")
+        device_trackers = [
+            entity
+            for entity in states
+            if entity["entity_id"].startswith("device_tracker.")
+        ]
+        return device_trackers
+
+    async def anyone_home(self):
+        """Check if anyone is home.
+
+        Returns:
+            True if any tracker is set to ``home``, else False.
+
+        """
+        trackers = await self.get_trackers()
+        home = [tracker["state"] == "home" for tracker in trackers]
+        return any(home)
+
+    async def everyone_home(self):
+        """Check if everyone is home.
+
+        Returns:
+            True if all trackers are set to ``home``, else False.
+
+        """
+        trackers = await self.get_trackers()
+        home = [tracker["state"] == "home" for tracker in trackers]
+        return all(home)
+
+    async def nobody_home(self):
+        """Check if nobody is home.
+
+        Returns:
+            True if all trackers are set to ``not_home``, else False.
+
+        """
+        trackers = await self.get_trackers()
+        not_home = [tracker["state"] == "not_home" for tracker in trackers]
+        return all(not_home)

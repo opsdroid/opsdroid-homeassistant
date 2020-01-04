@@ -17,6 +17,7 @@ This plugin allows you to bridge the two event loops so that state changes in Ho
    :maxdepth: 2
 
    examples
+   helpers
    api
    alternatives
 ```

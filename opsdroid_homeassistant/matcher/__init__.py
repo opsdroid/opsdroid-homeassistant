@@ -35,9 +35,49 @@ def match_hass_state_changed(entity_id: str, **kwargs) -> Callable:
             async def lights_on_at_sunset(self, event):
                 await self.turn_on("light.outside")
 
+    Note:
+        For sunrise and sunset triggers you can also use the :func:`match_sunrise` and
+        :func:`match_sunset` helper matchers.
+
     Args:
         entity_id: The full domain and name of the entity you want to watch. e,g ``sun.sun``
         state (optional): The state you want to watch for. e.g ``on``
 
     """
     return match_event(HassEvent, entity_id=entity_id, changed=True, **kwargs)
+
+
+def match_sunrise() -> Callable:
+    """A matcher to trigger skills on sunrise.
+
+    This matcher can be used to run skills when the sun rises::
+
+        from opsdroid_homeassistant import HassSkill, match_sunrise
+
+
+        class SunriseSkill(HassSkill):
+
+            @match_sunrise()
+            async def lights_off_at_sunrise(self, event):
+                await self.turn_off("light.outside")
+
+    """
+    return match_hass_state_changed("sun.sun", state="above_horizon")
+
+
+def match_sunset() -> Callable:
+    """A matcher to trigger skills on sunset.
+
+    This matcher can be used to run skills when the sun sets::
+
+        from opsdroid_homeassistant import HassSkill, match_sunset
+
+
+        class SunsetSkill(HassSkill):
+
+            @match_sunset()
+            async def lights_on_at_sunset(self, event):
+                await self.turn_on("light.outside")
+
+    """
+    return match_hass_state_changed("sun.sun", state="below_horizon")
