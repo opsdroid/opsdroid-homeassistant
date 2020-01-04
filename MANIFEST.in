@@ -1,5 +1,7 @@
-include versioneer.py
-include opsdroid_homeassistant/_version.py
 include README.md
 include LICENSE
 include requirements.txt
+graft opsdroid_homeassistant
+recursive-exclude * *.py[co]
+include versioneer.py
+include opsdroid_homeassistant/_version.py
