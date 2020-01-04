@@ -1,5 +1,3 @@
-<img src="https://github.com/opsdroid/opsdroid-homeassistant/raw/master/docs/_static/logo.png" style="float: right; height: 200px;">
-
 # Opsdroid Home Assistant
 
 [![Build Status](https://img.shields.io/travis/com/opsdroid/opsdroid-homeassistant?logo=travis)](https://travis-ci.com/opsdroid/opsdroid-homeassistant)
