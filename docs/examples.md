@@ -1,4 +1,4 @@
-# Examples
+# Example Automations
 
 Here are some example automations that you can build with Opsdroid.
 
@@ -7,16 +7,16 @@ Here are some example automations that you can build with Opsdroid.
 The following skill turns a light on a sunset and off again at sunrise.
 
 ```python
-from opsdroid_homeassistant import HassSkill, match_hass_state_changed
+from opsdroid_homeassistant import HassSkill, match_sunrise, match_sunset
 
 
 class SunriseSkill(HassSkill):
 
-    @match_hass_state_changed("sun.sun", state="below_horizon")
+    @match_sunset
     async def lights_on_at_sunset(self, event):
         await self.turn_on("light.outside")
 
-    @match_hass_state_changed("sun.sun", state="above_horizon")
+    @match_sunrise
     async def lights_off_at_sunrise(self, event):
         await self.turn_off("light.outside")
 ```

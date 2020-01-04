@@ -1,4 +1,4 @@
-# Helpers
+# Helper Functions
 
 ```eval_rst
 The :class:`opsdroid_homeassistant.HassSkill` has many helper functions to make

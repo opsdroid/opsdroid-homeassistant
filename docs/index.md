@@ -16,33 +16,9 @@ This plugin allows you to bridge the two event loops so that state changes in Ho
 .. toctree::
    :maxdepth: 2
 
+   getting-started
    examples
    helpers
    api
    alternatives
-```
-
-## Installation
-
-```console
-pip install opsdroid-homeassistant
-```
-
-## Example
-
-```python
-from opsdroid_homeassistant import HassSkill, match_hass_state_changed
-
-
-class SunriseSkill(HassSkill):
-
-    @match_hass_state_changed("sun.sun", state="below_horizon")
-    async def lights_on_at_sunset(self, event):
-        """Turn the outside light on when the sun sets."""
-        await self.turn_on("light.outside")
-
-    @match_hass_state_changed("sun.sun", state="above_horizon")
-    async def lights_off_at_sunrise(self, event):
-        """Turn the outside light off when the sun rises."""
-        await self.turn_off("light.outside")
 ```
