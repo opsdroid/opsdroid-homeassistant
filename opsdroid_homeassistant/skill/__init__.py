@@ -122,13 +122,18 @@ class HassSkill(Skill):
         else:
             _LOGGER.error("Unable to set value for unsupported entity %s", entity_id)
 
-    async def notify(self, title: str, message: str, **kwargs):
+    async def notify(self, message: str, title="Home Assistant": str, target="notify": str, **kwargs):
         """Send a notification to Home Assistant.
 
         Sends a ``notify.notify`` service call with the specified title and message.
+
+        Args:
+            message: A message to notify with.
+            title (optional): A title to set in the notification.
+            target (optional): The notification target. Defaults to ``notify`` which will notify all.
         """
         await self.call_service(
-            "notify", "notify", message=message, title=title, **kwargs
+            "notify", target, message=message, title=title, **kwargs
         )
 
     async def sun_up(self):
