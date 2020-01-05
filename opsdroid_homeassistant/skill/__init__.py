@@ -122,7 +122,9 @@ class HassSkill(Skill):
         else:
             _LOGGER.error("Unable to set value for unsupported entity %s", entity_id)
 
-    async def notify(self, message: str, title="Home Assistant": str, target="notify": str, **kwargs):
+    async def notify(
+        self, message: str, title="Home Assistant", target="notify", **kwargs
+    ):
         """Send a notification to Home Assistant.
 
         Sends a ``notify.notify`` service call with the specified title and message.
@@ -270,4 +272,6 @@ class HassSkill(Skill):
             Jacob is at home!
 
         """
-        return await self.hass.query_api("template", method="POST", decode_json=False, template=template)
+        return await self.hass.query_api(
+            "template", method="POST", decode_json=False, template=template
+        )
