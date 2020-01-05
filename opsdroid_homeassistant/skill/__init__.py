@@ -52,10 +52,28 @@ class HassSkill(Skill):
 
         Build your own service call to any domain and service.
 
-        For common operations such and turning off and on entities see
-        the :meth:`turn_on` and :meth:`turn_off` helper functions.
+        Note:
+            For common operations such and turning off and on entities see
+            the :meth:`turn_on` and :meth:`turn_off` helper functions.
         """
         await self.hass.send(HassServiceCall(domain, service, kwargs))
+
+    async def get_state(self, entity: str):
+        """Get the state of an entity.
+
+        Args:
+            entity: The ID of the entity to get the state for.
+
+        Returns:
+            The state of the entity.
+
+        Examples:
+            Get the state of the sun sensor::
+
+                >>> await self.get_state("sun.sun")
+                "above_horizon"
+        """
+        return (await self.hass.query_api("states/" + entity)).get("state", None)
 
     async def turn_on(self, entity_id: str, **kwargs):
         """Turn on an entity in Home Assistant.
@@ -145,8 +163,8 @@ class HassSkill(Skill):
             True if sun is up, else False.
 
         """
-        sun_state = await self.hass.query_api("states/sun.sun")
-        return sun_state["state"] == "above_horizon"
+        sun_state = await self.get_state("sun.sun")
+        return sun_state == "above_horizon"
 
     async def sun_down(self):
         """Check whether the sun is down.
@@ -155,8 +173,8 @@ class HassSkill(Skill):
             True if sun is down, else False.
 
         """
-        sun_state = await self.hass.query_api("states/sun.sun")
-        return sun_state["state"] == "below_horizon"
+        sun_state = await self.get_state("sun.sun")
+        return sun_state == "below_horizon"
 
     async def sunrise(self):
         """Get the timestamp for the next sunrise.
