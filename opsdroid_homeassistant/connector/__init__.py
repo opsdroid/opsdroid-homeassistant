@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import urllib.parse
@@ -38,6 +39,7 @@ class HassConnector(Connector):
         self.name = "homeassistant"
         self.default_target = None
         self.connection = None
+        self.listening = None
         self.discovery_info = None
         self.token = self.config.get("token")
         self.api_url = urllib.parse.urljoin(self.config.get("url"), "/api/")
@@ -50,16 +52,23 @@ class HassConnector(Connector):
 
     async def connect(self):
         self.discovery_info = await self.query_api('discovery_info')
+        self.listening = True
 
     async def listen(self):
         async with aiohttp.ClientSession() as session:
-            async with session.ws_connect(self.websocket_url) as ws:
-                self.connection = ws
-                async for msg in self.connection:
-                    if msg.type == aiohttp.WSMsgType.TEXT:
-                        await self._handle_message(json.loads(msg.data))
-                    elif msg.type == aiohttp.WSMsgType.ERROR:
-                        break
+            while self.listening:
+                try:
+                    async with session.ws_connect(self.websocket_url) as ws:
+                        self.connection = ws
+                        async for msg in self.connection:
+                            if msg.type == aiohttp.WSMsgType.TEXT:
+                                await self._handle_message(json.loads(msg.data))
+                            elif msg.type == aiohttp.WSMsgType.ERROR:
+                                break
+                    _LOGGER.info("Home Assistant closed the websocket, retrying...")
+                except aiohttp.client_exceptions.ClientConnectorError:
+                    _LOGGER.info("Unable to connect to Home Assistant, retrying...")
+                await asyncio.sleep(1)
 
     async def query_api(self, endpoint, method='GET', decode_json=True, **params):
         """Query a Home Assistant API endpoint.
@@ -122,18 +131,23 @@ class HassConnector(Connector):
             )
 
         if msg_type == "event":
-            event = HassEvent(None, None, None, self, raw_event=msg)
-            await event.update_entity("event_type", msg["event"]["event_type"])
-            await event.update_entity("entity_id", msg["event"]["data"]["entity_id"])
-            await event.update_entity(
-                "state", msg["event"]["data"]["new_state"]["state"]
-            )
-            changed = (
-                msg["event"]["data"]["new_state"]["state"]
-                != msg["event"]["data"]["old_state"]["state"]
-            )
-            await event.update_entity("changed", changed)
-            await self.opsdroid.parse(event)
+            try:
+                event = HassEvent(raw_event=msg)
+                await event.update_entity("event_type", msg["event"]["event_type"])
+                await event.update_entity("entity_id", msg["event"]["data"]["entity_id"])
+                await event.update_entity(
+                    "state", msg["event"]["data"]["new_state"]["state"]
+                )
+                changed = (
+                    msg["event"]["data"]["old_state"] is None or
+                    msg["event"]["data"]["new_state"]["state"]
+                    != msg["event"]["data"]["old_state"]["state"]
+                )
+                await event.update_entity("changed", changed)
+                await self.opsdroid.parse(event)
+            except (TypeError, KeyError):
+                _LOGGER.error("Home Assistant sent an event which didn't look like one we expected.")
+                _LOGGER.error(msg)
 
         if msg_type == "result":
             if msg["success"]:
@@ -155,4 +169,5 @@ class HassConnector(Connector):
 
     async def disconnect(self):
         self.discovery_info = None
+        self.listening = False
         await self.connection.close()
