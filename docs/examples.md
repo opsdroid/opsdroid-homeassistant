@@ -106,7 +106,7 @@ from asyncio import sleep
 from opsdroid_homeassistant import HassSkill, match_hass_state_changed, natch_sunrise, match_sunset
 
 
-class MotionCamera(HassSkill):
+class TortoiseSkill(HassSkill):
 
     @match_sunrise
     @match_sunset
