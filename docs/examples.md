@@ -101,8 +101,6 @@ This is an example of the skill I use to automate the lights.
 ```
 
 ```python
-from asyncio import sleep
-
 from opsdroid_homeassistant import HassSkill, match_hass_state_changed, natch_sunrise, match_sunset
 
 
