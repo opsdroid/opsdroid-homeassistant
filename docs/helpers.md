@@ -58,6 +58,13 @@ Helper functions for interacting with common Home Assistant services.
    :noindex:
 ```
 
+### get_state()
+
+```eval_rst
+.. autofunction:: opsdroid_homeassistant.HassSkill.get_state
+   :noindex:
+```
+
 ## Sun state
 
 Helpers for getting information about the sun state.
