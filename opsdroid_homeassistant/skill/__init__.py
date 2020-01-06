@@ -73,7 +73,9 @@ class HassSkill(Skill):
                 >>> await self.get_state("sun.sun")
                 "above_horizon"
         """
-        return (await self.hass.query_api("states/" + entity)).get("state", None)
+        state = await self.hass.query_api("states/" + entity)
+        _LOGGER.debug(state)
+        return state.get("state", None)
 
     async def turn_on(self, entity_id: str, **kwargs):
         """Turn on an entity in Home Assistant.
