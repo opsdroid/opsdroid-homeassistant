@@ -34,6 +34,7 @@ class HassConnector(Connector):
     """An opsdroid connector for syncing events with the Home Assistant event loop.
 
     """
+
     def __init__(self, config, opsdroid=None):
         super().__init__(config, opsdroid=opsdroid)
         self.name = "homeassistant"
@@ -51,7 +52,7 @@ class HassConnector(Connector):
         return self.id
 
     async def connect(self):
-        self.discovery_info = await self.query_api('discovery_info')
+        self.discovery_info = await self.query_api("discovery_info")
         self.listening = True
 
     async def listen(self):
@@ -70,7 +71,7 @@ class HassConnector(Connector):
                     _LOGGER.info("Unable to connect to Home Assistant, retrying...")
                 await asyncio.sleep(1)
 
-    async def query_api(self, endpoint, method='GET', decode_json=True, **params):
+    async def query_api(self, endpoint, method="GET", decode_json=True, **params):
         """Query a Home Assistant API endpoint.
 
         The Home Assistant API can be queried at ``<hass url>/api/<endpoint>``. For a full reference
@@ -85,26 +86,29 @@ class HassConnector(Connector):
                       For POST requests these will be dumped as a JSON dict and send at the post body.
 
         """
-        url = urllib.parse.urljoin(self.api_url + '/', endpoint)
+        url = urllib.parse.urljoin(self.api_url + "/", endpoint)
         headers = {
             "Authorization": "Bearer " + self.token,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
+        response = None
         _LOGGER.debug("Making a %s request to %s", method, url)
         async with aiohttp.ClientSession() as session:
-            if method.upper() == 'GET':
+            if method.upper() == "GET":
                 async with session.get(url, headers=headers, params=params) as resp:
                     if resp.status >= 400:
                         _LOGGER.error("Error %s - %s", resp.status, await resp.text())
                     else:
                         response = await resp.text()
-            if method.upper() == 'POST':
-                async with session.post(url, headers=headers, data=json.dumps(params)) as resp:
+            if method.upper() == "POST":
+                async with session.post(
+                    url, headers=headers, data=json.dumps(params)
+                ) as resp:
                     if resp.status >= 400:
                         _LOGGER.error("Error %s - %s", resp.status, await resp.text())
                     else:
                         response = await resp.text()
-        if decode_json:
+        if decode_json and response:
             response = json.loads(response)
         return response
 
@@ -134,19 +138,23 @@ class HassConnector(Connector):
             try:
                 event = HassEvent(raw_event=msg)
                 await event.update_entity("event_type", msg["event"]["event_type"])
-                await event.update_entity("entity_id", msg["event"]["data"]["entity_id"])
+                await event.update_entity(
+                    "entity_id", msg["event"]["data"]["entity_id"]
+                )
                 await event.update_entity(
                     "state", msg["event"]["data"]["new_state"]["state"]
                 )
                 changed = (
-                    msg["event"]["data"]["old_state"] is None or
-                    msg["event"]["data"]["new_state"]["state"]
+                    msg["event"]["data"]["old_state"] is None
+                    or msg["event"]["data"]["new_state"]["state"]
                     != msg["event"]["data"]["old_state"]["state"]
                 )
                 await event.update_entity("changed", changed)
                 await self.opsdroid.parse(event)
             except (TypeError, KeyError):
-                _LOGGER.error("Home Assistant sent an event which didn't look like one we expected.")
+                _LOGGER.error(
+                    "Home Assistant sent an event which didn't look like one we expected."
+                )
                 _LOGGER.error(msg)
 
         if msg_type == "result":
