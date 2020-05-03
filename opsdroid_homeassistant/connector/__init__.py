@@ -13,7 +13,6 @@ _LOGGER = logging.getLogger(__name__)
 CONFIG_SCHEMA = {
     Required("token"): str,
     Required("url"): str,
-    "websocket_url": str,
 }
 
 
