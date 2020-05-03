@@ -44,7 +44,13 @@ class HassConnector(Connector):
         self.discovery_info = None
         self.token = self.config.get("token")
         self.api_url = urllib.parse.urljoin(self.config.get("url"), "/api/")
-        self.websocket_url = urllib.parse.urljoin(self.api_url, "websocket")
+
+        # The websocket URL can differ depending on how Home Assistant was installed.
+        # So we will iterate over the various urls when attempting to connect.
+        self.websocket_urls = [
+            urllib.parse.urljoin(self.api_url, "websocket"),  # Plain Home Assistant
+            urllib.parse.urljoin(self.config.get("url"), "/websocket"),  # Hassio proxy
+        ]
         self.id = 1
 
     def _get_next_id(self):
@@ -58,18 +64,19 @@ class HassConnector(Connector):
     async def listen(self):
         async with aiohttp.ClientSession() as session:
             while self.listening:
-                try:
-                    async with session.ws_connect(self.websocket_url) as ws:
-                        self.connection = ws
-                        async for msg in self.connection:
-                            if msg.type == aiohttp.WSMsgType.TEXT:
-                                await self._handle_message(json.loads(msg.data))
-                            elif msg.type == aiohttp.WSMsgType.ERROR:
-                                break
-                    _LOGGER.info("Home Assistant closed the websocket, retrying...")
-                except aiohttp.client_exceptions.ClientConnectorError:
-                    _LOGGER.info("Unable to connect to Home Assistant, retrying...")
-                await asyncio.sleep(1)
+                for websocket_url in self.websocket_urls:
+                    try:
+                        async with session.ws_connect(websocket_url) as ws:
+                            self.connection = ws
+                            async for msg in self.connection:
+                                if msg.type == aiohttp.WSMsgType.TEXT:
+                                    await self._handle_message(json.loads(msg.data))
+                                elif msg.type == aiohttp.WSMsgType.ERROR:
+                                    break
+                        _LOGGER.info("Home Assistant closed the websocket, retrying...")
+                    except aiohttp.client_exceptions.ClientConnectorError:
+                        _LOGGER.info("Unable to connect to Home Assistant, retrying...")
+                    await asyncio.sleep(1)
 
     async def query_api(self, endpoint, method="GET", decode_json=True, **params):
         """Query a Home Assistant API endpoint.
