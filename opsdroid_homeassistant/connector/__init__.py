@@ -74,7 +74,10 @@ class HassConnector(Connector):
                                 elif msg.type == aiohttp.WSMsgType.ERROR:
                                     break
                         _LOGGER.info("Home Assistant closed the websocket, retrying...")
-                    except aiohttp.client_exceptions.ClientConnectorError:
+                    except (
+                        aiohttp.client_exceptions.ClientConnectorError,
+                        aiohttp.client_exceptions.WSServerHandshakeError,
+                    ):
                         _LOGGER.info("Unable to connect to Home Assistant, retrying...")
                     await asyncio.sleep(1)
 
