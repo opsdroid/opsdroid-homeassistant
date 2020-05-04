@@ -162,11 +162,12 @@ class HassConnector(Connector):
                 )
                 await event.update_entity("changed", changed)
                 await self.opsdroid.parse(event)
-            except (TypeError, KeyError):
+            except (TypeError, KeyError) as e:
                 _LOGGER.error(
                     "Home Assistant sent an event which didn't look like one we expected."
                 )
-                _LOGGER.error(msg)
+                _LOGGER.debug(msg)
+                _LOGGER.debug(str(e))
 
         if msg_type == "result":
             if msg["success"]:
