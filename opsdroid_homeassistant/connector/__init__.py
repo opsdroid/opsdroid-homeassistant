@@ -70,6 +70,7 @@ class HassConnector(Connector):
                         async with session.ws_connect(websocket_url) as ws:
                             self.connection = ws
                             async for msg in self.connection:
+                                _LOGGER.debug(msg.data)
                                 if msg.type == aiohttp.WSMsgType.TEXT:
                                     await self._handle_message(json.loads(msg.data))
                                 elif msg.type == aiohttp.WSMsgType.ERROR:
