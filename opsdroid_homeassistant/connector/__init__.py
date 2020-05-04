@@ -58,6 +58,7 @@ class HassConnector(Connector):
         return self.id
 
     async def connect(self):
+        _LOGGER.debug("Connecting with token " + self.token)
         self.discovery_info = await self.query_api("discovery_info")
         self.listening = True
 
@@ -77,6 +78,7 @@ class HassConnector(Connector):
                     except (
                         aiohttp.client_exceptions.ClientConnectorError,
                         aiohttp.client_exceptions.WSServerHandshakeError,
+                        aiohttp.client_exceptions.ServerDisconnectedError,
                     ):
                         _LOGGER.info("Unable to connect to Home Assistant, retrying...")
                     await asyncio.sleep(1)
