@@ -43,13 +43,13 @@ class HassConnector(Connector):
         self.listening = None
         self.discovery_info = None
         self.token = self.config.get("token")
-        self.api_url = urllib.parse.urljoin(self.config.get("url"), "/api/")
+        self.api_url = urllib.parse.urljoin(self.config.get("url"), "api/")
 
         # The websocket URL can differ depending on how Home Assistant was installed.
         # So we will iterate over the various urls when attempting to connect.
         self.websocket_urls = [
             urllib.parse.urljoin(self.api_url, "websocket"),  # Plain Home Assistant
-            urllib.parse.urljoin(self.config.get("url"), "/websocket"),  # Hassio proxy
+            urllib.parse.urljoin(self.config.get("url"), "websocket"),  # Hassio proxy
         ]
         self.id = 1
 
