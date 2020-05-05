@@ -1,0 +1,101 @@
+{
+    "data": {
+        "credentials": [
+            {
+                "auth_provider_id": null,
+                "auth_provider_type": "homeassistant",
+                "data": {
+                    "username": "opsdroid"
+                },
+                "id": "6cb976c79280479d8230567c564d8ab3",
+                "user_id": "f932d46a37f544bdbbbd5af1a8e72d70"
+            }
+        ],
+        "groups": [
+            {
+                "id": "system-admin",
+                "name": "Administrators"
+            },
+            {
+                "id": "system-users",
+                "name": "Users"
+            },
+            {
+                "id": "system-read-only",
+                "name": "Read Only"
+            }
+        ],
+        "refresh_tokens": [
+            {
+                "access_token_expiration": 1800.0,
+                "client_icon": null,
+                "client_id": "http://10.51.100.14:8123/",
+                "client_name": null,
+                "created_at": "2020-05-05T21:42:19.522769+00:00",
+                "id": "e13b85044c0d4e8e9ade3e19e57c45b8",
+                "jwt_key": "a7743fc919b8d58da2877d98cd626425fe7bec6f36e489a71ffa39ac2e90b9b97d4c0f8e800da1903f9371962a15cbdc065cf404326eea5546aed21e13cb3803",
+                "last_used_at": "2020-05-05T21:42:19.522838+00:00",
+                "last_used_ip": "10.51.0.14",
+                "token": "4de23a6512726be9bcfe105f540e2a1f97b1fe2b3fadc410db945bb5106871e0094afb04c2cc4b62ee2fb819aa150e9f7781468096b87097486fcbd3f805d4d0",
+                "token_type": "normal",
+                "user_id": "f932d46a37f544bdbbbd5af1a8e72d70"
+            },
+            {
+                "access_token_expiration": 315360000.0,
+                "client_icon": null,
+                "client_id": null,
+                "client_name": "pytest",
+                "created_at": "2020-05-05T21:44:29.842427+00:00",
+                "id": "3c208227c25148e9a8ac88a7aa31c808",
+                "jwt_key": "90a44db6a9116f7cd5a4124e0b3923ef7cb7230749c4b6a347c0646dbff0b703a9299d62bb52425a0735e2e22917c1e5dc0d12d36a01bd727b49170de0840f86",
+                "last_used_at": "2020-05-05T21:44:29.842513+00:00",
+                "last_used_ip": null,
+                "token": "1f68de895dde97994c0bad99c1b3c292e58047ed609c2827bc58208c346a4d9688931ec59d5a2266fd250d11689c4d9956ea4d1449c6a7356a1be3416dd21dbd",
+                "token_type": "long_lived_access_token",
+                "user_id": "f932d46a37f544bdbbbd5af1a8e72d70"
+            },
+            {
+                "access_token_expiration": 1800.0,
+                "client_icon": null,
+                "client_id": "http://10.51.100.14:8123/",
+                "client_name": null,
+                "created_at": "2020-05-05T22:02:47.641479+00:00",
+                "id": "a8326ca7729e4f64bcf0a9c762189721",
+                "jwt_key": "1e653630dcbdd609d1864c276ac7665ea8d040f81c0029bc2eb1c64a89e4ac1fac239ea69edd0b6c2f21da553f383db2352a30b34679e91781b9b789e587f9a6",
+                "last_used_at": "2020-05-05T22:02:47.641582+00:00",
+                "last_used_ip": "10.51.0.14",
+                "token": "429219403a4642d6fcb754fb1e0ed2bc82370cd03876ddd363dab95dcd83c6b95f06ca6783cd5cf3384da9d4299abe3892d1dffb71fa1e17ecd8ee125ebd360d",
+                "token_type": "normal",
+                "user_id": "f932d46a37f544bdbbbd5af1a8e72d70"
+            },
+            {
+                "access_token_expiration": 1800.0,
+                "client_icon": null,
+                "client_id": "http://10.51.100.14:8123/",
+                "client_name": null,
+                "created_at": "2020-05-05T22:07:33.178069+00:00",
+                "id": "5fde4ed6205745379e7fb3fa4f2b80a9",
+                "jwt_key": "476b8336fb1bbd01b8758e956181c60a3689f08ceaa36d37fbdba0c2df96b253dba37c93919145f8f2ebd38abc23bd9fbb7db8aeb2a565643960a9a2d6f8197a",
+                "last_used_at": "2020-05-05T22:07:33.178118+00:00",
+                "last_used_ip": "10.51.0.14",
+                "token": "251f21f7dee68a2405fe8b852ed0be55e5ae80d89322cd827f2e0a9f348da0f41ffeabdde4cb90254853e69150ed1f5f53622dbe493b88838a4483c84d4493c7",
+                "token_type": "normal",
+                "user_id": "f932d46a37f544bdbbbd5af1a8e72d70"
+            }
+        ],
+        "users": [
+            {
+                "group_ids": [
+                    "system-admin"
+                ],
+                "id": "f932d46a37f544bdbbbd5af1a8e72d70",
+                "is_active": true,
+                "is_owner": true,
+                "name": "Opsdroid",
+                "system_generated": false
+            }
+        ]
+    },
+    "key": "auth",
+    "version": 1
+}

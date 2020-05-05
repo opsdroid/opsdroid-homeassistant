@@ -1,0 +1,14 @@
+{
+    "data": {
+        "items": [
+            {
+                "device_trackers": [],
+                "id": "opsdroid",
+                "name": "Opsdroid",
+                "user_id": "f932d46a37f544bdbbbd5af1a8e72d70"
+            }
+        ]
+    },
+    "key": "person",
+    "version": 2
+}

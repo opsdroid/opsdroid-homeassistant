@@ -130,3 +130,8 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# Home Assistant
+home-assistant_v2.db
+.HA_VERSION
+known_devices.yaml
