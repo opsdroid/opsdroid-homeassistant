@@ -2,6 +2,10 @@ dist: xenial
 language: python
 services:
   - docker
+addons:
+  apt:
+    packages:
+      - docker-ce
 
 install:
   - pip install -e .
