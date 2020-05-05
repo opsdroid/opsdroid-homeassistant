@@ -21,4 +21,5 @@ This plugin allows you to bridge the two event loops so that state changes in Ho
    helpers
    api
    alternatives
+   contributing
 ```

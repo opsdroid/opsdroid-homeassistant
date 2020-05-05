@@ -130,3 +130,9 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# Home Assistant
+opsdroid_homeassistant/tests/hass_config/home-assistant_v2.db
+opsdroid_homeassistant/tests/hass_config/.HA_VERSION
+opsdroid_homeassistant/tests/hass_config/known_devices.yaml
+opsdroid_homeassistant/tests/hass_config/.storage/core.restore_state

@@ -1,0 +1,12 @@
+{
+    "data": {
+        "users": [
+            {
+                "password": "JDJiJDEyJDZMbk9tZXJBUjRodTg0TW1xOVFlai4wdmZNaVhlMVVWNXdjMmF6UkdMUzlTUG1CSm9nZ1Vl",
+                "username": "opsdroid"
+            }
+        ]
+    },
+    "key": "auth_provider.homeassistant",
+    "version": 1
+}
