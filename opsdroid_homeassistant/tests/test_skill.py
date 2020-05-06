@@ -36,7 +36,7 @@ async def test_sun_states(mock_skill):
     assert isinstance(await mock_skill.sunrise(), datetime)
 
     assert await mock_skill.sun_up() or await mock_skill.sun_down()
-    assert not await mock_skill.sun_up() and await mock_skill.sun_down()
+    assert not (await mock_skill.sun_up() and await mock_skill.sun_down())
 
     if await mock_skill.sun_up():
         assert await mock_skill.sunset() < await mock_skill.sunrise()
