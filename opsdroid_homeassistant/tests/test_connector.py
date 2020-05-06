@@ -1,26 +1,32 @@
 import pytest
-import requests
 
-from opsdroid_homeassistant import HassConnector
-
-
-@pytest.fixture
-def config(homeassistant, access_token):
-    return {"token": access_token, "url": homeassistant}
+from opsdroid.events import Message
 
 
-@pytest.fixture
-def connector(config):
-    return HassConnector(config, opsdroid=None)
-
-
-def test_attributes(connector):
+@pytest.mark.asyncio
+async def test_attributes(connector):
     assert connector.name == "homeassistant"
     assert connector.default_target is None
 
 
 @pytest.mark.asyncio
 async def test_connect(connector):
-    await connector.connect()
     assert connector.listening
     assert "version" in connector.discovery_info
+
+
+@pytest.mark.asyncio
+async def test_turn_on_off_toggle(opsdroid, test_skill):
+    assert await test_skill.get_state("light.bed_light") == "off"
+
+    await opsdroid.parse(Message("Turn on the light"))
+    assert await test_skill.get_state("light.bed_light") == "on"
+
+    await opsdroid.parse(Message("Turn off the light"))
+    assert await test_skill.get_state("light.bed_light") == "off"
+
+    await opsdroid.parse(Message("Toggle the light"))
+    assert await test_skill.get_state("light.bed_light") == "on"
+
+    await opsdroid.parse(Message("Toggle the light"))
+    assert await test_skill.get_state("light.bed_light") == "off"
