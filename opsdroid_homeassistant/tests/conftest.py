@@ -57,15 +57,15 @@ def connector(connector_config):
 
 
 @pytest.fixture
-def test_skill_path():
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_skill")
+def mock_skill_path():
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_skill")
 
 
 @pytest.fixture
-async def opsdroid(connector_config, test_skill_path):
+async def opsdroid(connector_config, mock_skill_path):
     config = {
         "connectors": {"homeassistant": connector_config},
-        "skills": {"test": {"path": test_skill_path}},
+        "skills": {"test": {"path": mock_skill_path}},
     }
     configure_lang({})
     with OpsDroid(config) as opsdroid:
@@ -82,5 +82,5 @@ async def connector(opsdroid):
 
 
 @pytest.fixture
-async def test_skill(opsdroid):
-    return opsdroid.test_skill
+async def mock_skill(opsdroid):
+    return opsdroid.mock_skill

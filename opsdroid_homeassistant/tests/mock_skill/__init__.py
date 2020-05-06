@@ -5,7 +5,7 @@ from opsdroid_homeassistant import HassSkill
 class TestSkill(HassSkill):
     def __init__(self, opsdroid, config, *args, **kwargs):
         super().__init__(opsdroid, config, *args, **kwargs)
-        opsdroid.test_skill = self
+        opsdroid.mock_skill = self
 
     @match_regex(r"Turn on the light")
     async def lights_on(self, event):
