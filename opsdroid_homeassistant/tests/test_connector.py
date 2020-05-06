@@ -1,5 +1,7 @@
 import pytest
 
+from asyncio import sleep
+
 from opsdroid.events import Message
 
 
@@ -20,13 +22,17 @@ async def test_turn_on_off_toggle(opsdroid, test_skill):
     assert await test_skill.get_state("light.bed_light") == "off"
 
     await opsdroid.parse(Message("Turn on the light"))
+    await sleep(0.1)
     assert await test_skill.get_state("light.bed_light") == "on"
 
     await opsdroid.parse(Message("Turn off the light"))
+    await sleep(0.1)
     assert await test_skill.get_state("light.bed_light") == "off"
 
     await opsdroid.parse(Message("Toggle the light"))
+    await sleep(0.1)
     assert await test_skill.get_state("light.bed_light") == "on"
 
     await opsdroid.parse(Message("Toggle the light"))
+    await sleep(0.1)
     assert await test_skill.get_state("light.bed_light") == "off"
