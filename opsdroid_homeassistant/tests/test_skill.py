@@ -42,3 +42,52 @@ async def test_sun_states(mock_skill):
         assert await mock_skill.sunset() < await mock_skill.sunrise()
     else:
         assert await mock_skill.sunset() > await mock_skill.sunrise()
+
+
+@pytest.mark.asyncio
+async def test_presence(mock_skill):
+    assert isinstance(await mock_skill.anyone_home(), bool)
+    assert isinstance(await mock_skill.everyone_home(), bool)
+    assert isinstance(await mock_skill.nobody_home(), bool)
+    assert isinstance(await mock_skill.get_trackers(), list)
+
+
+@pytest.mark.asyncio
+async def test_template_render(mock_skill):
+    template = await mock_skill.render_template(
+        "Paulus is {{ states('device_tracker.demo_paulus') }}!"
+    )
+    assert template == "Paulus is not_home!"
+
+
+@pytest.mark.asyncio
+async def test_notify(mock_skill):
+    await mock_skill.notify("Hello world")
+    # TODO Assert something to check the notification fired correctly
+
+
+@pytest.mark.asyncio
+async def test_update_entity(connector, mock_skill):
+    entity = "sensor.outside_temperature"
+    original_temp = await mock_skill.get_state(entity)
+
+    await connector.query_api("states/" + entity, method="POST", state=0)
+    assert await mock_skill.get_state(entity) == "0"
+
+    await mock_skill.update_entity(entity)
+    assert original_temp == await mock_skill.get_state(entity)
+
+
+@pytest.mark.asyncio
+async def test_set_value(mock_skill):
+    assert await mock_skill.get_state("input_number.slider1") == "30.0"
+    await mock_skill.set_value("input_number.slider1", 20)
+    assert await mock_skill.get_state("input_number.slider1") == "20.0"
+
+    assert await mock_skill.get_state("input_text.text1") == "Some Text"
+    await mock_skill.set_value("input_text.text1", "Hello world")
+    assert await mock_skill.get_state("input_text.text1") == "Hello world"
+
+    assert await mock_skill.get_state("input_select.who_cooks") == "Anne Therese"
+    await mock_skill.set_value("input_select.who_cooks", "Paulus")
+    assert await mock_skill.get_state("input_select.who_cooks") == "Paulus"

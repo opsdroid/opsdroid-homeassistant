@@ -1,3 +1,24 @@
 default_config:
 
 demo:
+
+input_number:
+  slider1:
+    name: Slider
+    initial: 30
+    min: -20
+    max: 35
+    step: 1
+
+input_text:
+  text1:
+    name: Text 1
+    initial: Some Text
+
+input_select:
+  who_cooks:
+    name: Who cooks today
+    options:
+      - Paulus
+      - Anne Therese
+    initial: Anne Therese

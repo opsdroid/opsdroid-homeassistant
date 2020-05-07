@@ -50,7 +50,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": "moisture",
                 "device_id": "0efcd869a45a4a37b5a139c456f57406",
@@ -66,7 +66,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": "motion",
                 "device_id": "fa7a0151062344679fbb4218998460cd",
@@ -190,7 +190,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": null,
                 "device_id": "5ccdb4fcb67d4d56bcef471b1e5f300c",
@@ -206,7 +206,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": null,
                 "device_id": "bd88c7cf2c664aea9689e788ee2b3cc2",
@@ -222,7 +222,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": null,
                 "device_id": "13fe113f40b64b769485f0ae4d330804",
@@ -238,7 +238,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": "garage",
                 "device_id": "ea29ea745fbf448982f17d84e8882a23",
@@ -254,7 +254,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": null,
                 "device_id": "f63387f35852406da69c4242855a6cbb",
@@ -270,7 +270,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": "outlet",
                 "device_id": "80b6dc8ef0ae48f093326acbab390337",
@@ -286,7 +286,7 @@
                 "unit_of_measurement": null
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": "temperature",
                 "device_id": "128b2acaf42a4d52a2d1c65a0c1904cd",
@@ -302,7 +302,7 @@
                 "unit_of_measurement": "\u00b0C"
             },
             {
-                "capabilities": null,
+                "capabilities": {},
                 "config_entry_id": "e14bc8ca98b44debbf4ef340c3edde80",
                 "device_class": "humidity",
                 "device_id": "d9c5afb47a1b45b4885b33337e0314f4",
@@ -378,6 +378,54 @@
                 "platform": "demo",
                 "supported_features": 151,
                 "unique_id": "light_3",
+                "unit_of_measurement": null
+            },
+            {
+                "capabilities": null,
+                "config_entry_id": null,
+                "device_class": null,
+                "device_id": null,
+                "disabled_by": null,
+                "entity_id": "input_number.slider1",
+                "icon": null,
+                "name": null,
+                "original_icon": null,
+                "original_name": "Slider",
+                "platform": "input_number",
+                "supported_features": 0,
+                "unique_id": "slider1",
+                "unit_of_measurement": null
+            },
+            {
+                "capabilities": null,
+                "config_entry_id": null,
+                "device_class": null,
+                "device_id": null,
+                "disabled_by": null,
+                "entity_id": "input_select.who_cooks",
+                "icon": null,
+                "name": null,
+                "original_icon": null,
+                "original_name": "Who cooks today",
+                "platform": "input_select",
+                "supported_features": 0,
+                "unique_id": "who_cooks",
+                "unit_of_measurement": null
+            },
+            {
+                "capabilities": null,
+                "config_entry_id": null,
+                "device_class": null,
+                "device_id": null,
+                "disabled_by": null,
+                "entity_id": "input_text.text1",
+                "icon": null,
+                "name": null,
+                "original_icon": null,
+                "original_name": "Text 1",
+                "platform": "input_text",
+                "supported_features": 0,
+                "unique_id": "text1",
                 "unit_of_measurement": null
             }
         ]
