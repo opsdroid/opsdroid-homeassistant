@@ -79,7 +79,7 @@ async def test_update_entity(connector, mock_skill):
 
 
 @pytest.mark.asyncio
-async def test_set_value(mock_skill):
+async def test_set_value(mock_skill, caplog):
     assert await mock_skill.get_state("input_number.slider1") == "30.0"
     await mock_skill.set_value("input_number.slider1", 20)
     assert await mock_skill.get_state("input_number.slider1") == "20.0"
@@ -91,3 +91,6 @@ async def test_set_value(mock_skill):
     assert await mock_skill.get_state("input_select.who_cooks") == "Anne Therese"
     await mock_skill.set_value("input_select.who_cooks", "Paulus")
     assert await mock_skill.get_state("input_select.who_cooks") == "Paulus"
+
+    await mock_skill.set_value("light.bed_light", "Foo")
+    assert "unsupported entity light.bed_light" in caplog.text
