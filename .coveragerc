@@ -1,0 +1,8 @@
+[run]
+source = opsdroid_homeassistant
+
+[report]
+show_missing = True
+omit =
+    opsdroid_homeassistant/_version.py
+    opsdroid_homeassistant/tests/*

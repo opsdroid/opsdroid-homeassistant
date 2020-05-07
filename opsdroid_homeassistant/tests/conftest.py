@@ -1,8 +1,12 @@
+from asyncio import sleep
 import os
 import pytest
 import requests
 
 from requests.exceptions import ConnectionError
+
+from opsdroid.core import OpsDroid
+from opsdroid.cli.start import configure_lang
 
 
 @pytest.fixture(scope="session")
@@ -40,3 +44,43 @@ def homeassistant(docker_ip, docker_services, access_token):
         check=lambda: is_responsive(url, {"Authorization": "Bearer " + access_token}),
     )
     return url
+
+
+@pytest.fixture
+def connector_config(homeassistant, access_token):
+    return {"token": access_token, "url": homeassistant}
+
+
+@pytest.fixture
+def connector(connector_config):
+    return HassConnector(config, opsdroid=None)
+
+
+@pytest.fixture
+def mock_skill_path():
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_skill")
+
+
+@pytest.fixture
+async def opsdroid(connector_config, mock_skill_path):
+    config = {
+        "connectors": {"homeassistant": connector_config},
+        "skills": {"test": {"path": mock_skill_path}},
+    }
+    configure_lang({})
+    with OpsDroid(config) as opsdroid:
+        await opsdroid.load()
+        await sleep(0.1)  # Give the startup tasks some room to breathe
+        yield opsdroid
+        await opsdroid.unload()
+
+
+@pytest.fixture
+async def connector(opsdroid):
+    [connector] = opsdroid.connectors
+    return connector
+
+
+@pytest.fixture
+async def mock_skill(opsdroid):
+    return opsdroid.mock_skill
