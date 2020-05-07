@@ -148,19 +148,15 @@ class HassConnector(Connector):
         if msg_type == "event":
             try:
                 event = HassEvent(raw_event=msg)
-                await event.update_entity("event_type", msg["event"]["event_type"])
-                await event.update_entity(
-                    "entity_id", msg["event"]["data"]["entity_id"]
-                )
-                await event.update_entity(
-                    "state", msg["event"]["data"]["new_state"]["state"]
-                )
+                event.update_entity("event_type", msg["event"]["event_type"])
+                event.update_entity("entity_id", msg["event"]["data"]["entity_id"])
+                event.update_entity("state", msg["event"]["data"]["new_state"]["state"])
                 changed = (
                     msg["event"]["data"]["old_state"] is None
                     or msg["event"]["data"]["new_state"]["state"]
                     != msg["event"]["data"]["old_state"]["state"]
                 )
-                await event.update_entity("changed", changed)
+                event.update_entity("changed", changed)
                 await self.opsdroid.parse(event)
             except (TypeError, KeyError):
                 _LOGGER.error(
