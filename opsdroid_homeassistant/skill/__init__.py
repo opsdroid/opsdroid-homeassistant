@@ -52,9 +52,19 @@ class HassSkill(Skill):
 
         Build your own service call to any domain and service.
 
+        Args:
+            domain: The Home Assistant service domain. E.g ``media_player``.
+            service: The service to call. E.g ``media_pause``
+            **kwargs: Service parameters are passed as kwargs. E.g ``entity_id="media_player.living_room_sonos"``
+
         Note:
             For common operations such and turning off and on entities see
             the :meth:`turn_on` and :meth:`turn_off` helper functions.
+
+        Examples:
+            Turn off a climate HVAC::
+
+                >>> await self.call_service("climate", "set_hvac_mode", entity_id="climate.living_room", hvac_mode="off")
         """
         await self.hass.send(HassServiceCall(domain, service, kwargs))
 
