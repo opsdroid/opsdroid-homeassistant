@@ -41,11 +41,18 @@ class HassSkill(Skill):
 
     def __init__(self, opsdroid, config, *args, **kwargs):
         super().__init__(opsdroid, config, *args, **kwargs)
-        [self.hass] = [
-            connector
-            for connector in self.opsdroid.connectors
-            if connector.name == "homeassistant"
-        ]
+        self._hass = None
+
+    @property
+    def hass(self):
+        if self._hass is None:
+            # create lazily (opsdroid.connectors not yet known when __init__ called)
+            [self._hass] = [
+                connector
+                for connector in self.opsdroid.connectors
+                if connector.name == "homeassistant"
+            ]
+        return self._hass
 
     async def call_service(self, domain: str, service: str, *args, **kwargs):
         """Send a service call to Home Assistant.
