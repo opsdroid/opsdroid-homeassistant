@@ -55,6 +55,7 @@ def connector_config(homeassistant, access_token):
 def connector(connector_config):
     return HassConnector(config, opsdroid=None)
 
+
 @pytest.fixture
 def mock_skill_path():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_skill")
