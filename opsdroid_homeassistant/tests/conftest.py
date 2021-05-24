@@ -55,7 +55,6 @@ def connector_config(homeassistant, access_token):
 def connector(connector_config):
     return HassConnector(config, opsdroid=None)
 
-
 @pytest.fixture
 def mock_skill_path():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), "mock_skill")
@@ -70,8 +69,10 @@ async def opsdroid(connector_config, mock_skill_path):
     configure_lang({})
     with OpsDroid(config) as opsdroid:
         await opsdroid.load()
+        await opsdroid.start_connectors()
         await sleep(0.1)  # Give the startup tasks some room to breathe
         yield opsdroid
+        await opsdroid.stop()
         await opsdroid.unload()
 
 
