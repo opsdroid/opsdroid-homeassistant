@@ -70,8 +70,10 @@ async def opsdroid(connector_config, mock_skill_path):
     configure_lang({})
     with OpsDroid(config) as opsdroid:
         await opsdroid.load()
+        await opsdroid.start_connectors()
         await sleep(0.1)  # Give the startup tasks some room to breathe
         yield opsdroid
+        await opsdroid.stop()
         await opsdroid.unload()
 
 
